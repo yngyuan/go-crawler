@@ -1,2 +1,6 @@
 # go-crawler
-Go crawler for learning purpose. 
+## A single-task crawler
+
+## A concurrent crawler using goroutine
+
+## A distributed crawler.
