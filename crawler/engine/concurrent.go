@@ -1,13 +1,13 @@
 package engine
 
 import (
-	"go-crawler/crawler/model"
 	"log"
 )
 
 type ConcurrentEngine struct{
-	Scheduler Scheduler
+	Scheduler   Scheduler
 	WorkerCount int
+	ItemChan    chan interface{}
 }
 
 type Scheduler interface {
@@ -37,14 +37,13 @@ func (e  *ConcurrentEngine) Run(seeds...Request) {
 		}
 		e.Scheduler.Submit(r)
 	}
-	profileCount := 0
+
 	for{
 		result := <- out
 		for _, item := range result.Items {
-			if _, ok := item.(model.Profile); ok{
-				log.Printf("Got profile #%d: %v", profileCount,item)
-				profileCount++
-			}
+			go func() {
+				e.ItemChan <- item
+			}()
 		}
 
 		//URL Redup

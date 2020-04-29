@@ -36,7 +36,7 @@ var guessRe = regexp.MustCompile(
 //var idUrlRe = regexp.MustCompile(
 //	`.*album\.zhenai\.com/u/([\d]+)`)
 
-func ParseProfile(contents []byte, name string) engine.ParseResult{
+func ParseProfile(contents []byte, name string) engine.ParseResult {
 
 	profile := model.Profile{}
 	profile.Name = name
