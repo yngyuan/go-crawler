@@ -10,7 +10,8 @@ const url = "http://localhost:8080/mock/www.zhenai.com/zhenghun"
 
 func main()  {
 	e := engine.ConcurrentEngine{
-		Scheduler: &scheduler.SimpleScheduler{},
+		// scheduler.SimpleScheduler
+		Scheduler: &scheduler.QueueScheduler{},
 		WorkerCount: 10,
 	}
 	e.Run(engine.Request{
