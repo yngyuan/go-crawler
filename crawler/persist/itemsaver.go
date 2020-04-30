@@ -3,6 +3,7 @@ package persist
 import (
 	"context"
 	"fmt"
+	"github.com/olivere/elastic"
 	"log"
 )
 
