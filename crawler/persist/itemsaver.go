@@ -2,7 +2,6 @@ package persist
 
 import (
 	"context"
-	"fmt"
 	"github.com/olivere/elastic"
 	"log"
 )
@@ -22,21 +21,22 @@ func ItemSaver() chan interface{} {
 	return out
 }
 
-func save(item interface{}) {
+func save(item interface{}) (id string, err error) {
 	client, err := elastic.NewClient(
 		// must turn off sniff in docker
 		elastic.SetSniff(false))
 
 	if err != nil {
-		panic(err)
+		return "", err
 	}
 
-	resp, err := client.Index().Index("dating_profile").
-		Type("zhenai").BodyJson(item).Do(context.Background())
+	resp, err := client.Index().
+		Index("dating_profile").
+		Type("zhenai").
+		BodyJson(item).
+		Do(context.Background())
 	if err != nil {
-		panic(err)
+		return "", err
 	}
-
-	fmt.Printf("%+v", resp)
-	//fmt.Println(item)
+	return resp.Id, nil
 }
