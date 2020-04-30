@@ -30,21 +30,26 @@ func TestSave(t *testing.T) {
 		Car:        "无车",
 		},
 	}
-	// Save expected item
-	err := save(expected)
-	if err != nil{
-		panic(err)
-	}
-	// Fetch saved item
+
+	// here using docker client
 	client, err := elastic.NewClient(
 		elastic.SetSniff(false))
 	if err!= nil {
 		panic(err)
 	}
 
+	const index = "dating_test"
+
+	// Save expected item
+	err = save(client, index, expected)
+	if err != nil{
+		panic(err)
+	}
+
+	// Fetch saved item
 	// TODO: Try to start slastic search here using docker go client
 	resp, err := client.Get().
-		Index("dating_profile").
+		Index(index).
 		Type(expected.Type).
 		Id(expected.Id).
 		Do(context.Background())

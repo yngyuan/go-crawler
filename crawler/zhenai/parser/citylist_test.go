@@ -10,7 +10,7 @@ func TestParseCityList(t *testing.T) {
 	 if err != nil {
 	 	panic(err)
 	 }
-	 result := ParseCityList(contents)
+	 result := ParseCityList(contents, "")
 
 	 const resultSize = 10
 

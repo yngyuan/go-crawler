@@ -8,7 +8,14 @@ import (
 	"log"
 )
 
-func ItemSaver() chan engine.Item {
+func ItemSaver(index string) (chan engine.Item, error) {
+	client, err := elastic.NewClient(
+		// must turn off sniff in docker
+		elastic.SetSniff(false))
+	if err != nil {
+		return nil,err
+	}
+
 	out := make(chan engine.Item)
 	go func() {
 		itemCount := 0
@@ -17,31 +24,24 @@ func ItemSaver() chan engine.Item {
 			log.Printf("Item saver: got item #%d: %v", itemCount, item)
 			itemCount++
 			
-			err := save(item)
+			err := save(client, index, item)
 			if err != nil{
 				log.Printf("Item saver: error saving item %v: %v", item, err)
 			}
 
 		}
 	}()
-	return out
+	return out, err
 }
 
-func save(item engine.Item) (err error) {
-	client, err := elastic.NewClient(
-		// must turn off sniff in docker
-		elastic.SetSniff(false))
-
-	if err != nil {
-		return err
-	}
-
+func save(client *elastic.Client, index string,
+	item engine.Item) (err error) {
 	if item.Type == ""{
 		return errors.New("must supply Type")
 	}
 
 	indexService := client.Index(). //database name
-		Index("dating_profile").
+		Index(index).
 		Type(item.Type).  // data sheet name
 		Id(item.Id).
 		BodyJson(item)
