@@ -63,7 +63,7 @@ func createWorker(in chan Request, out chan ParseResult, notifier ReadyNotifier)
 			// tell scheduler I'm ready
 			notifier.WorkerReady(in)
 			request := <- in
-			result, err := worker(request)
+			result, err := Worker(request)
 			if err != nil {
 				continue
 			}

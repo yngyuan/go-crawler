@@ -7,7 +7,7 @@ import (
 )
 
 var (
-	profileRe = regexp.MustCompile(`*album\.zhenai\.com/u/[0-9]+)"[^>]*>([^<]+)</a>`)
+	profileRe = regexp.MustCompile(`<a href="(.*album\.zhenai\.com/u/[0-9]+)"[^>]*>([^<]+)</a>`)
 	cityUrlRe = regexp.MustCompile(`href="(.*www\.zhenai\.com/zhenghun/[^"]+)"`)
 )
 
