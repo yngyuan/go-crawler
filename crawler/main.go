@@ -19,6 +19,7 @@ func main()  {
 		Scheduler:   &scheduler.QueueScheduler{},
 		WorkerCount: 100,
 		ItemChan:    itemChan,
+		RequestProcessor: engine.Worker,
 	}
 	e.Run(engine.Request{
 		Url:        url,
