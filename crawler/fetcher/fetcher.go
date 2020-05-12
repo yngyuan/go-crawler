@@ -3,6 +3,7 @@ package fetcher
 import (
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 )
 
@@ -10,6 +11,7 @@ import (
 
 func Fetch(url string) ([]byte, error) {
 //	<- rateLimiter
+	log.Printf("Fetching url%s", url)
 	resp, err := http.Get(url)
 	if err != nil {
 		return nil, err
